@@ -300,46 +300,52 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
   }
 
   return (
-    <div className="flex flex-col h-[700px] max-w-2xl mx-auto bg-card rounded-xl border shadow-2xl overflow-hidden">
-      <div className="flex items-center space-x-3 p-5 border-b bg-gradient-to-r from-violet-600 via-purple-600 to-violet-700 text-white">
-        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/30">
-          <Car className="w-6 h-6 text-white" />
+    <div className="flex flex-col h-screen sm:h-[700px] w-full sm:max-w-2xl mx-auto bg-card sm:rounded-xl border-0 sm:border shadow-none sm:shadow-2xl overflow-hidden">
+      <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-5 border-b bg-gradient-to-r from-violet-600 via-purple-600 to-violet-700 text-white">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/30">
+          <Car className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
         </div>
-        <div className="flex-1">
-          <h3 className="font-bold text-lg">RideGuide Copilot</h3>
-          <p className="text-violet-100 text-sm flex items-center gap-1">
-            <Zap className="w-3 h-3" />
-            Your AI ride assistant • Online
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-base sm:text-lg truncate">RideGuide Copilot</h3>
+          <p className="text-violet-100 text-xs sm:text-sm flex items-center gap-1">
+            <Zap className="w-3 h-3 flex-shrink-0" />
+            <span className="truncate">Your AI ride assistant • Online</span>
           </p>
         </div>
-        <div className="text-right">
+        <div className="text-right hidden sm:block">
           <div className="text-xs text-violet-200">Powered by AI</div>
           <div className="text-xs text-violet-100">Compare • Book • Save</div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gradient-to-b from-violet-50/30 via-white to-violet-50/20">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4 bg-gradient-to-b from-violet-50/30 via-white to-violet-50/20">
         {messages.map((message, index) => (
           <div
             key={message.id}
-            className={`flex items-start gap-3 animate-in slide-in-from-bottom-2 duration-300 ${
+            className={`flex items-start gap-2 sm:gap-3 animate-in slide-in-from-bottom-2 duration-300 ${
               message.type === "user" ? "flex-row-reverse" : "flex-row"
             }`}
             style={{ animationDelay: `${index * 50}ms` }}
           >
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg border-2 ${
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg border-2 ${
                 message.type === "user"
                   ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white border-violet-300"
                   : "bg-gradient-to-br from-white to-violet-50 text-violet-600 border-violet-200"
               }`}
             >
-              {message.type === "user" ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
+              {message.type === "user" ? (
+                <User className="w-4 h-4 sm:w-5 sm:h-5" />
+              ) : (
+                <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
             </div>
 
-            <div className={`max-w-[80%] relative ${message.type === "user" ? "text-right" : "text-left"}`}>
+            <div
+              className={`max-w-[85%] sm:max-w-[80%] relative ${message.type === "user" ? "text-right" : "text-left"}`}
+            >
               <div
-                className={`p-4 rounded-2xl whitespace-pre-line shadow-lg border transition-all duration-300 hover:shadow-xl hover:scale-[1.02] ${
+                className={`p-3 sm:p-4 rounded-2xl whitespace-pre-line shadow-lg border transition-all duration-300 hover:shadow-xl text-sm sm:text-base leading-relaxed ${
                   message.type === "user"
                     ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white rounded-br-md border-violet-400/30 shadow-violet-200"
                     : "bg-white text-gray-800 rounded-bl-md border-violet-100 shadow-violet-100"
@@ -348,7 +354,7 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
                 {message.content}
               </div>
               <div
-                className={`text-xs text-muted-foreground mt-2 flex items-center gap-1 ${
+                className={`text-xs text-muted-foreground mt-1 sm:mt-2 flex items-center gap-1 ${
                   message.type === "user" ? "justify-end" : "justify-start"
                 }`}
               >
@@ -360,19 +366,19 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
         ))}
 
         {isTyping && (
-          <div className="flex items-start gap-3 animate-in slide-in-from-bottom-2">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-white to-violet-50 text-violet-600 border-2 border-violet-200 shadow-lg">
-              <Bot className="w-5 h-5" />
+          <div className="flex items-start gap-2 sm:gap-3 animate-in slide-in-from-bottom-2">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-white to-violet-50 text-violet-600 border-2 border-violet-200 shadow-lg">
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div className="bg-white text-foreground p-4 rounded-2xl rounded-bl-md shadow-lg border border-violet-100">
+            <div className="bg-white text-foreground p-3 sm:p-4 rounded-2xl rounded-bl-md shadow-lg border border-violet-100">
               <div className="flex space-x-1">
-                <div className="w-2.5 h-2.5 bg-violet-500 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-violet-500 rounded-full animate-bounce"></div>
                 <div
-                  className="w-2.5 h-2.5 bg-violet-400 rounded-full animate-bounce"
+                  className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-violet-400 rounded-full animate-bounce"
                   style={{ animationDelay: "0.1s" }}
                 ></div>
                 <div
-                  className="w-2.5 h-2.5 bg-violet-300 rounded-full animate-bounce"
+                  className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-violet-300 rounded-full animate-bounce"
                   style={{ animationDelay: "0.2s" }}
                 ></div>
               </div>
@@ -382,12 +388,12 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-5 border-t bg-gradient-to-r from-violet-50 to-purple-50 border-violet-100">
+      <div className="p-3 sm:p-5 border-t bg-gradient-to-r from-violet-50 to-purple-50 border-violet-100 safe-area-pb">
         {showBookAgain && (
           <div className="mb-3 animate-in slide-in-from-bottom-2">
             <Button
               onClick={handleBookAgain}
-              className="w-full rounded-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+              className="w-full h-12 sm:h-auto rounded-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-base sm:text-sm font-medium"
             >
               <RotateCcw className="w-4 h-4" />
               Book Another Ride
@@ -395,7 +401,7 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
           </div>
         )}
 
-        <div className="flex space-x-3">
+        <div className="flex space-x-2 sm:space-x-3">
           <div className="flex-1 relative">
             <Input
               value={currentInput}
@@ -416,14 +422,14 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
                       ? "Number of passengers..."
                       : "Type your message..."
               }
-              className={`rounded-full border-2 transition-all duration-300 bg-white shadow-sm pl-12 ${
+              className={`h-12 sm:h-auto rounded-full border-2 transition-all duration-300 bg-white shadow-sm pl-11 sm:pl-12 text-base sm:text-sm ${
                 inputFocused
                   ? "border-violet-400 shadow-lg shadow-violet-100"
                   : "border-violet-200 hover:border-violet-300"
               }`}
               disabled={isTyping || (conversationState === "completed" && showBookAgain)}
             />
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 -mt-2 text-violet-400 pointer-events-none">
+            <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 -mt-1 sm:-mt-2 text-violet-400 pointer-events-none">
               {conversationState === "pickup" || conversationState === "dropoff" ? (
                 <MapPin className="w-4 h-4" />
               ) : conversationState === "passengers" ? (
@@ -435,7 +441,7 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
             onClick={handleSendMessage}
             disabled={!currentInput.trim() || isTyping || (conversationState === "completed" && showBookAgain)}
             size="icon"
-            className="rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 disabled:opacity-50"
+            className="rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 disabled:opacity-50 flex-shrink-0"
           >
             <Send className="w-5 h-5" />
           </Button>
