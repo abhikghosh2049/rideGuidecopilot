@@ -5,7 +5,8 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Send, Car, Bot, User, MapPin, Users, Clock, Zap, RotateCcw } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import { Send, Car, Bot, User, MapPin, Users, Clock, Zap, RotateCcw, Star } from "lucide-react"
 
 interface Message {
   id: string
@@ -151,7 +152,7 @@ export function ChatInterface({ onBookRide }: ChatInterfaceProps) {
   ])
   const [currentInput, setCurrentInput] = useState("")
   const [conversationState, setConversationState] = useState<
-    "pickup" | "dropoff" | "passengers" | "searching" | "results" | "completed"
+    "pickup" | "dropoff" | "passengers" | "searching" | "results" | "completed" | "rating"
   >("pickup")
   const [rideData, setRideData] = useState<{ pickup: string; dropoff: string; passengers: number }>({
     pickup: "",
@@ -161,6 +162,10 @@ export function ChatInterface({ onBookRide }: ChatInterfaceProps) {
   const [isTyping, setIsTyping] = useState(false)
   const [inputFocused, setInputFocused] = useState(false)
   const [showBookAgain, setShowBookAgain] = useState(false)
+  const [showRating, setShowRating] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [feedback, setFeedback] = useState("")
+  const [hoveredStar, setHoveredStar] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -304,7 +309,13 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
                   "🚗 Hope you had a great ride! Need another trip? I'm here to help you find the best options again! 😊",
                   "bot",
                 )
-                setShowBookAgain(true)
+                setTimeout(() => {
+                  addMessage(
+                    "⭐ How was your experience with RideGuide? Your feedback helps us improve!\n\nWould you like to rate our service? (This is completely optional)",
+                    "bot",
+                  )
+                  setShowRating(true)
+                }, 1500)
               }, 3000)
             }, 1500)
           })
@@ -320,6 +331,29 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
     }
   }
 
+  const handleRatingSubmit = () => {
+    if (rating > 0) {
+      const ratingMessage = `⭐ Thank you for rating us ${rating} star${rating > 1 ? "s" : ""}!${
+        feedback.trim() ? `\n\n💬 Your feedback: "${feedback.trim()}"` : ""
+      }\n\nWe appreciate your input and will use it to improve RideGuide! 🙏`
+
+      addMessage(ratingMessage, "bot")
+
+      setShowRating(false)
+      setRating(0)
+      setFeedback("")
+      setShowBookAgain(true)
+    }
+  }
+
+  const handleSkipRating = () => {
+    addMessage("No worries! Thanks for using RideGuide. Ready for another ride? 🚗", "bot")
+    setShowRating(false)
+    setRating(0)
+    setFeedback("")
+    setShowBookAgain(true)
+  }
+
   const handleBookAgain = () => {
     setMessages([
       {
@@ -333,6 +367,9 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
     setRideData({ pickup: "", dropoff: "", passengers: 1 })
     setCurrentInput("")
     setShowBookAgain(false)
+    setShowRating(false)
+    setRating(0)
+    setFeedback("")
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -428,12 +465,57 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="p-3 sm:p-5 border-t bg-gradient-to-r from-violet-50 to-purple-50 border-violet-100 safe-area-pb">
-        {showBookAgain && (
-          <div className="mb-3 animate-in slide-in-from-bottom-2">
+        {(showRating || showBookAgain) && (
+          <div className="space-y-4 animate-in slide-in-from-bottom-2">
+            {showRating && (
+              <div className="p-4 bg-white rounded-2xl border border-violet-200 shadow-lg">
+                <div className="text-center">
+                  <h4 className="font-semibold text-gray-800 mb-2">Rate Your Experience</h4>
+                  <div className="flex justify-center gap-1 mb-3">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHoveredStar(star)}
+                        onMouseLeave={() => setHoveredStar(0)}
+                        className="p-1 transition-transform hover:scale-110"
+                      >
+                        <Star
+                          className={`w-8 h-8 transition-colors ${
+                            star <= (hoveredStar || rating)
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300 hover:text-yellow-300"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  <Textarea
+                    placeholder="Share your thoughts on how we can improve RideGuide... (optional)"
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    className="mb-3 resize-none border-violet-200 focus:border-violet-400"
+                    rows={3}
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleRatingSubmit}
+                      disabled={rating === 0}
+                      className="flex-1 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white"
+                    >
+                      Submit Rating
+                    </Button>
+                    <Button
+                      onClick={handleSkipRating}
+                      variant="outline"
+                      className="flex-1 border-violet-200 text-violet-600 hover:bg-violet-50 bg-transparent"
+                    >
+                      Skip
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
             <Button
               onClick={handleBookAgain}
               className="w-full h-12 sm:h-auto rounded-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-base sm:text-sm font-medium"
@@ -443,7 +525,10 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
             </Button>
           </div>
         )}
+        <div ref={messagesEndRef} />
+      </div>
 
+      <div className="p-3 sm:p-5 border-t bg-gradient-to-r from-violet-50 to-purple-50 border-violet-100 safe-area-pb">
         <div className="flex space-x-2 sm:space-x-3">
           <div className="flex-1 relative">
             <Input
@@ -470,9 +555,9 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
                   ? "border-violet-400 shadow-lg shadow-violet-100"
                   : "border-violet-200 hover:border-violet-300"
               }`}
-              disabled={isTyping || (conversationState === "completed" && showBookAgain)}
+              disabled={isTyping || (conversationState === "completed" && (showBookAgain || showRating))}
             />
-            <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 -mt-1 sm:-mt-2 text-violet-400 pointer-events-none">
+            <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 -mt-2 text-violet-400 pointer-events-none">
               {conversationState === "pickup" || conversationState === "dropoff" ? (
                 <MapPin className="w-4 h-4" />
               ) : conversationState === "passengers" ? (
@@ -482,7 +567,9 @@ ${vehicleEmoji} ${ride.vehicleType} ${index === 0 ? "🏆 **Best Price!**" : ind
           </div>
           <Button
             onClick={handleSendMessage}
-            disabled={!currentInput.trim() || isTyping || (conversationState === "completed" && showBookAgain)}
+            disabled={
+              !currentInput.trim() || isTyping || (conversationState === "completed" && (showBookAgain || showRating))
+            }
             size="icon"
             className="rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 disabled:opacity-50 flex-shrink-0"
           >
