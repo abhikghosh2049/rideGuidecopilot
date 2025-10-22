@@ -1,30 +1,45 @@
-# RideGuide Copilot
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+## Project Architecture
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/abhik-ghoshs-projects-e2b2fdc9/v0-ride-guide-copilot)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/tSEdUshc8gi)
+The project follows Next.js App Router architecture with a component-based structure, featuring a conversational chat interface for ride comparison, responsive design optimized for mobile devices, and integration with multiple ride-hailing services (Ola, Uber, InDrive, Rapido). The application uses a modern violet-themed design system with authentic service logos and supports both car and bike booking options based on passenger count.
+## Core Technology Stack
 
-## Overview
+**Frontend Framework:**
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+- **Next.js 14.2.16** - React-based full-stack framework with App Router
+- **React 18** - Component-based UI library
+- **TypeScript 5** - Static type checking for JavaScript
 
-## Deployment
 
-Your project is live at:
+**Styling & Design System:**
 
-**[https://vercel.com/abhik-ghoshs-projects-e2b2fdc9/v0-ride-guide-copilot](https://vercel.com/abhik-ghoshs-projects-e2b2fdc9/v0-ride-guide-copilot)**
+- **Tailwind CSS 4.1.9** - Utility-first CSS framework
+- **Shadcn/ui** - Modern component library (New York variant)
+- **Radix UI** - Accessible, unstyled UI primitives
+- **Lucide React** - Beautiful icon library
+- **Geist Font** - Modern typography (Sans & Mono variants)
 
-## Build your app
 
-Continue building your app on:
+**Development & Build Tools:**
 
-**[https://v0.app/chat/projects/tSEdUshc8gi](https://v0.app/chat/projects/tSEdUshc8gi)**
+- **TypeScript** - Strict mode enabled for type safety
+- **PostCSS** - CSS processing and optimization
+- **ESLint** - Code linting and quality assurance
+- **PNPM** - Fast, disk space efficient package manager
 
-## How It Works
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+**Key Libraries:**
+
+- **React Hook Form + Zod** - Form handling with schema validation
+- **Next Themes** - Dark/light theme management
+- **Recharts** - Data visualization and charts
+- **Sonner** - Toast notification system
+- **Class Variance Authority** - Component variant management
+- **Date-fns** - Date manipulation utilities
+
+
+**Deployment & Analytics:**
+
+- **Vercel** - Cloud platform for deployment
+- **Vercel Analytics** - Performance and usage tracking
+
